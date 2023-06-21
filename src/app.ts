@@ -36,7 +36,7 @@ const upload = multer({
     }
 });
 
-app.post('/upload', upload.single('image'), (req, res, next) => {
+app.post('/upload/:path*', upload.single('image'), (req, res, next) => {
     const file = req.file;
     if (!file) {
         const error = new Error('Please upload a file');
