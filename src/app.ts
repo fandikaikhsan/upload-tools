@@ -20,12 +20,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    fileFilter: (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+    fileFilter: (req: Request, file: Express.Multer.File, cb: any) => {
         if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
             cb(null, true);
         } else {
             cb(null, false);
-            // return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
         }
     }
 });
@@ -41,11 +41,12 @@ app.post('/upload', upload.single('image'), (req, res, next) => {
 );
 
 app.get('/', (req, res) => {
-    res.send('Hello world!');
+    res.send('Welcome to uploading image tools');
     }
 );
 
-app.listen(3000, () => {
-    console.log('Server is listening on port http://localhost:3000');
+
+app.listen(8002, () => {
+    console.log('Server is listening on port http://localhost:8002');
     }
 );
