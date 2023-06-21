@@ -1,5 +1,7 @@
 import express, { Request } from 'express';
 import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
 type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
@@ -10,7 +12,11 @@ const app = express();
 
 const storage = multer.diskStorage({
     destination: (req: Request, file: Express.Multer.File, cb: DestinationCallback) => {
-        cb(null, 'public/images');
+        let destination = path.join(__dirname, req.params.path);
+        if (!fs.existsSync(destination)) {
+            fs.mkdirSync(destination, { recursive: true });
+        }
+        cb(null, destination);
     },
     filename: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
