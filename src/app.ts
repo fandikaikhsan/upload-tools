@@ -9,6 +9,8 @@ type FileFilterCallback = (error: Error | null, acceptFile: boolean) => void
 
 const app = express()
 
+app.use("/image", express.static("public/image"))
+
 const storage = multer.diskStorage({
   destination: (
     req: Request,
