@@ -24,7 +24,9 @@ const storage = multer.diskStorage({
     cb(null, destination)
   },
   filename: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-")
+    const extension = file.originalname.toLowerCase().split(".").pop()
+    const userFileName = req.body.name.toLowerCase().split(" ").join("-")
+    const fileName = `${userFileName}.${extension}`
     cb(null, fileName)
   },
 })
@@ -32,15 +34,19 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req: Request, file: Express.Multer.File, cb: any) => {
+    if (!req.body.name) {
+      return cb(new Error("Please provide a file name in the name field!"))
+    }
+
     if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/jpeg"
     ) {
       cb(null, true)
     } else {
       cb(null, false)
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"))
+      return cb(new Error("Only .png, .jpg, and .jpeg formats are allowed!"))
     }
   },
 })
