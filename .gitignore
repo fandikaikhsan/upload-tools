@@ -1,6 +1,7 @@
 # Production
 node_modules/
 dist/
+public/
 
 # Environment
 .env
