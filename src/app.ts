@@ -3,6 +3,7 @@ import multer from "multer"
 import path from "path"
 import fs from "fs"
 import cors from "cors"
+import bodyParser from "body-parser"
 
 type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
@@ -18,6 +19,9 @@ app.use(
     origin: process.env.ORIGIN,
   })
 )
+
+app.use(bodyParser.json({ limit: "50mb" }))
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
 
 const storage = multer.diskStorage({
   destination: (
