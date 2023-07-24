@@ -2,6 +2,7 @@ import express, { Request } from "express"
 import multer from "multer"
 import path from "path"
 import fs from "fs"
+import cors from "cors"
 
 type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
@@ -10,6 +11,8 @@ type FileFilterCallback = (error: Error | null, acceptFile: boolean) => void
 const app = express()
 
 app.use("/image", express.static("public/image"))
+
+app.use(cors())
 
 const storage = multer.diskStorage({
   destination: (
