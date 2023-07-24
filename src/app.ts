@@ -12,7 +12,11 @@ const app = express()
 
 app.use("/image", express.static("public/image"))
 
-app.use(cors())
+const allowedOrigin = process.env.ALLOWED_ORIGIN || "*"
+const corsOptions = {
+  origin: allowedOrigin.split(","),
+}
+app.use(cors(corsOptions))
 
 const storage = multer.diskStorage({
   destination: (
